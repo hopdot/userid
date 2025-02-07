@@ -1,0 +1,19 @@
+# Python script for Hcoinx Drive functionality
+
+def apply_customization(car_model, car_color, car_upgrade):
+    """Function to apply car customization"""
+    print(f"Customization Applied:\nModel: {car_model}\nColor: {car_color}\nUpgrade: {car_upgrade}")
+    return {"model": car_model, "color": car_color, "upgrade": car_upgrade}
+
+
+def initialize_game():
+    """Function to initialize the game"""
+    print("Initializing Hcoinx Drive...")
+    default_car = apply_customization("Speedster GT", "#FF0000", "Turbo Boost")
+    return default_car
+
+
+if __name__ == "__main__":
+    # Run game initialization
+    game_data = initialize_game()
+    print("Game Initialized with:", game_data)
