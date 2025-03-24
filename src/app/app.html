@@ -1,1 +1,70 @@
-<ion-nav #appNav [root]="rootPage"></ion-nav>
+<ion-nav #appNav [root]="rootPage"></ion-nav> 
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+
+contract EconomicDataStorage {
+    address public owner;
+    AggregatorV3Interface internal gdpFeed; // Chainlink Oracle for GDP data
+
+    struct EconomicData {
+        uint256 year;
+        int256 gdpGrowth;
+        string sector;
+        address submittedBy;
+    }
+
+    EconomicData[] public economicRecords;
+    mapping(uint256 => bool) public yearExists;
+
+    event DataSubmitted(uint256 year, int256 gdpGrowth, string sector, address submittedBy);
+    event GDPFetched(uint256 year, int256 gdpGrowth);
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not the contract owner");
+        _;
+    }
+
+    constructor(address _chainlinkOracle) {
+        owner = msg.sender;
+        gdpFeed = AggregatorV3Interface(_chainlinkOracle);
+    }
+
+    function submitEconomicData(uint256 _year, int256 _gdpGrowth, string memory _sector) public {
+        require(!yearExists[_year], "Data for this year already exists");
+
+        economicRecords.push(EconomicData({
+            year: _year,
+            gdpGrowth: _gdpGrowth,
+            sector: _sector,
+            submittedBy: msg.sender
+        }));
+
+        yearExists[_year] = true;
+        emit DataSubmitted(_year, _gdpGrowth, _sector, msg.sender);
+    }
+
+    function getLatestGDP() public view returns (int256) {
+        (, int256 gdpGrowth,,,) = gdpFeed.latestRoundData();
+        return gdpGrowth;
+    }
+
+    function fetchAndStoreLatestGDP(uint256 _year, string memory _sector) public onlyOwner {
+        int256 gdpGrowth = getLatestGDP();
+        economicRecords.push(EconomicData({
+            year: _year,
+            gdpGrowth: gdpGrowth,
+            sector: _sector,
+            submittedBy: address(this)
+        }));
+
+        yearExists[_year] = true;
+        emit GDPFetched(_year, gdpGrowth);
+    }
+
+    function getEconomicData(uint256 index) public view returns (uint256, int256, string memory, address) {
+        EconomicData memory data = economicRecords[index];
+        return (data.year, data.gdpGrowth, data.sector, data.submittedBy);
+    }
+}
