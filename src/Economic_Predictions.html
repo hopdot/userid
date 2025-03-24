@@ -1,0 +1,111 @@
+<html lang="en"><head></head><body><html<!doctype html="">
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economic Sector Predictions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .download-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+
+
+
+    <h1>Economic Sector Performance Predictions</h1>
+
+    <table>
+        <tbody><tr>
+            <th>Economic Sector Matchup</th>
+            <th>Predicted Winner</th>
+            <th>Growth Projection</th>
+        </tr>
+        </tbody><tbody id="predictions-table"><tr>
+                <td>Technology vs Manufacturing</td>
+                <td>Technology</td>
+                <td>5.2% vs 2.8%</td>
+            </tr><tr>
+                <td>Healthcare vs Retail</td>
+                <td>Healthcare</td>
+                <td>4.5% vs 3.0%</td>
+            </tr><tr>
+                <td>Finance vs Real Estate</td>
+                <td>Finance</td>
+                <td>3.8% vs 2.1%</td>
+            </tr></tbody>
+    </table>
+
+    <a id="downloadBtn" class="download-btn">Download Report</a>
+
+    <script>
+        const predictions = [
+            { sector: "Technology vs Manufacturing", winner: "Technology", projection: "5.2% vs 2.8%" },
+            { sector: "Healthcare vs Retail", winner: "Healthcare", projection: "4.5% vs 3.0%" },
+            { sector: "Finance vs Real Estate", winner: "Finance", projection: "3.8% vs 2.1%" }
+        ];
+
+        const tableBody = document.getElementById("predictions-table");
+
+        predictions.forEach(prediction => {
+            const row = `<tr>
+                <td>${prediction.sector}</td>
+                <td>${prediction.winner}</td>
+                <td>${prediction.projection}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+
+        document.getElementById("downloadBtn").addEventListener("click", function() {
+            const content = document.documentElement.outerHTML;
+            const blob = new Blob([content], { type: "text/html" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "Economic_Predictions.html";
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+
+
+
+
+
+<h1>Economic Predictions</h1>
+
+</html<!doctype></body></html>
