@@ -1,0 +1,4 @@
+/index.html      ← main dashboard UI
+/style.css       ← styles
+/app.js          ← JS logic (price feed, predictions)
+/assets/         ← images, logos, etc.
